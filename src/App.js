@@ -10,30 +10,33 @@ function App() {
   const url = 'https://course-api.com/react-tabs-project'
   const [getUser, setGetUser] = useState([])
   const [desc, setDesc] = useState(0)
+  const [loading, setLoading] = useState(true)
+
 
     const getApi=async()=>{
       try {
-        const {data} = await axios(url)
-        // console.log(data);
+        const {data} = await axios(url);
+        console.log(data);
         setGetUser(data)
-        
+        setLoading(false)
       } catch (error) {
         console.log(error);
       }
-     
-
     }
     useEffect(() => {
       getApi()
     
     }, [])
+    if(loading){
+      return(
+        <section className='loading section'><h1>Loading...</h1></section>
+      )
+    }
 
-  
+  // console.log(getUser);
     
+  const{company,dates,duties,title}=getUser[desc]
 
-
-
-const{company,dates,duties,title}=getUser[desc]
   return(
     <section className='section'>
       <div className="title">
@@ -44,7 +47,7 @@ const{company,dates,duties,title}=getUser[desc]
       <div className="jobs-center">
         <div  className="btn-container">
           {
-            getUser.map((item,index)=>{return(<button className={`job-btn ${index === desc && 'active-btn'}`} onClick={setDesc(index)}>{item.company}</button>)})
+            getUser.map((item,index)=>{return(<button className={`job-btn ${index === desc && 'active-btn'}`} onClick={()=>setDesc(index)}>{item.company}</button>)})
           }
         </div>
 
